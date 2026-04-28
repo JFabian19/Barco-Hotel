@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #14532d;
+  --color-secondary: #f59e0b;
+  --color-background: #fdfdfd;
+  --color-surface: rgba(255, 255, 255, 0.6);
+  --font-title: "Bungee", cursive;
+  --font-body: "Inter", sans-serif;
+  --font-slogan: "Quicksand", sans-serif;
+  --shadow-mobile: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.15);
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+/* Base styles */
+html, body {
+  @apply h-screen overflow-hidden bg-background text-slate-800 font-body;
+}
+
+body {
+  background-color: #fdfdfd;
+  background-image: radial-gradient(rgba(20, 83, 45, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-md border border-white/50 shadow-glass rounded-[2rem];
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(150%); }
+}
+
+.animate-marquee {
+  animation: marquee 12s linear infinite; /* Increased speed */
+}
+
+/* Base structural constraint for the mobile-first app */
+.app-container {
+  @apply mx-auto w-full max-w-[500px] h-screen max-h-screen flex flex-col bg-white/40 backdrop-blur-3xl relative overflow-y-auto overflow-x-hidden;
+}
+
+@media (min-width: 501px) {
+  .app-container {
+    @apply shadow-mobile my-4 rounded-[2.5rem] border-[8px] border-white/80 h-[calc(100vh-2rem)];
+  }
+}
