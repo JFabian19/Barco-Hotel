@@ -376,7 +376,7 @@ export default function App() {
           </div>
           <div className="rounded-[2rem] overflow-hidden shadow-glass border border-white/50 h-64">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d127343.45440724312!2d-73.31637057955189!3d-3.7482929449430554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ea10b9e44a8585%3A0x8488b1877f9ab40!2sIquitos!5e0!3m2!1ses-419!2spe!4v1714285800000!5m2!1ses-419!2spe"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4002.274534967391!2d-73.25619429999999!3d-3.6921000999999993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ea1bdeff08cd29%3A0x1cf37fd39b5a2b37!2sHostal%20Nanay!5e1!3m2!1ses!2spe!4v1777530455912!5m2!1ses!2spe"
               width="100%"
               height="100%"
               style={{ border: 0 }}
@@ -386,6 +386,36 @@ export default function App() {
             ></iframe>
           </div>
         </section>
+
+        {/* FOOTER & MEDIOS DE PAGO */}
+        <footer className="px-4 py-8 mt-6 bg-[#14532d] text-white rounded-t-[3rem] text-center border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.1)]">
+          <div className="mb-6">
+            <h3 className="font-title text-xl text-secondary mb-1">Medios de Pago</h3>
+            <p className="text-xs text-white/70 font-slogan">Aceptamos todas las tarjetas y billeteras digitales</p>
+          </div>
+          <div className="flex justify-center items-center gap-3 mb-8">
+            <div className="bg-white p-2 rounded-xl h-12 flex items-center justify-center w-16 shadow-md">
+              <span className="text-[#6c157f] font-bold text-sm">YAPE</span>
+            </div>
+            <div className="bg-white p-2 rounded-xl h-12 flex items-center justify-center w-16 shadow-md">
+              <span className="text-[#00c8e5] font-bold text-sm">PLIN</span>
+            </div>
+            <div className="bg-white p-2 rounded-xl h-12 flex items-center justify-center w-16 shadow-md">
+              <span className="text-[#1a1f71] font-bold text-[11px]">VISA</span>
+            </div>
+            <div className="bg-white p-2 rounded-xl h-12 flex items-center justify-center w-16 shadow-md">
+              <span className="text-[#eb001b] font-bold text-[10px] leading-none">MASTER<br/>CARD</span>
+            </div>
+          </div>
+          <div className="border-t border-white/10 pt-6">
+            <div className="w-16 h-16 mx-auto mb-3 opacity-50 grayscale">
+              <img src="/logo.png" alt="Barco Hotel Logo" className="w-full h-full object-contain" />
+            </div>
+            <p className="text-[10px] font-slogan tracking-widest text-white/50 uppercase">
+              © {new Date().getFullYear()} Barcotel.<br/>Todos los derechos reservados.
+            </p>
+          </div>
+        </footer>
       </div>
 
       {/* FLOATING CART BAR */}
