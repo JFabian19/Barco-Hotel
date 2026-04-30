@@ -1,6 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, MapPin, Camera, Plus, Minus, X, ArrowRight, ArrowLeft, BedDouble, UtensilsCrossed, ArrowDown, Tv, ShowerHead, Wind, Wifi, Phone, MessageCircle, Waves, Users, Utensils, Sun } from 'lucide-react';
+import { MapPin, Plus, Minus, X, ArrowRight, BedDouble, UtensilsCrossed, ArrowDown, Tv, ShowerHead, Wind, Wifi, Waves, Users, Utensils, Sun } from 'lucide-react';
 import { rooms, menu, categories } from './data';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -108,19 +108,7 @@ export default function App() {
     }
   };
 
-  const triggerMapScroll = () => {
-    const target = document.getElementById("map-section");
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
-  const categoryCards = [
-    { id: 'habitaciones', name: 'Habitaciones', image: '/room.png', target: 'rooms-section' },
-    { id: 'comidas', name: 'Comidas', image: '/tacacho.png', target: 'Comidas' },
-    { id: 'bebidas', name: 'Bebidas', image: '/camucamu.png', target: 'Bebidas' },
-    { id: 'cocteles', name: 'Cócteles', image: '/camucamu.png', target: 'Cócteles' },
-  ];
 
   const handleCategoryClick = (target: string) => {
     scrollToCategory(target);
