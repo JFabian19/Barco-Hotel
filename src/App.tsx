@@ -166,6 +166,7 @@ export default function App() {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const categoryRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+  const isManualScrolling = useRef(false);
 
   const cartTotal = useMemo(() => cart.reduce((acc, item) => acc + item.price * item.quantity, 0), [cart]);
   const cartCount = useMemo(() => cart.reduce((acc, item) => acc + item.quantity, 0), [cart]);
@@ -211,23 +212,28 @@ export default function App() {
   useEffect(() => {
     const observerOptions = {
       root: scrollContainerRef.current,
-      rootMargin: '-100px 0px -80% 0px',
+      rootMargin: '-90px 0px -70% 0px',
       threshold: 0,
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveCategory(entry.target.id);
-        }
-      });
+      if (isManualScrolling.current) return;
+
+      const intersecting = entries.filter(e => e.isIntersecting);
+      if (intersecting.length > 0) {
+        // Sort by how close they are to the top of the rootMargin
+        const topIntersecting = intersecting.reduce((prev, curr) => 
+          curr.boundingClientRect.top < prev.boundingClientRect.top ? curr : prev
+        );
+        setActiveCategory(topIntersecting.target.id);
+      }
     }, observerOptions);
 
     const timer = setTimeout(() => {
       Object.values(categoryRefs.current).forEach((ref) => {
         if (ref) observer.observe(ref);
       });
-    }, 100);
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -248,10 +254,16 @@ export default function App() {
   }, [activeCategory]);
 
   const scrollToCategory = (cat: string) => {
-    setActiveCategory(cat);
     const target = categoryRefs.current[cat];
     if (target) {
+      isManualScrolling.current = true;
+      setActiveCategory(cat);
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      // Re-enable observer after smooth scroll ends
+      setTimeout(() => {
+        isManualScrolling.current = false;
+      }, 1000);
     }
   };
 
@@ -380,7 +392,7 @@ export default function App() {
                 key={cat} 
                 id={cat} 
                 ref={(el) => { categoryRefs.current[cat] = el; }}
-                className="scroll-mt-24"
+                className="scroll-mt-28"
               >
                 <h3 className="font-title text-base text-primary mb-4 uppercase tracking-wider flex items-center gap-2 border-l-4 border-secondary pl-2">
                   {cat}
