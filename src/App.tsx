@@ -407,7 +407,8 @@ export default function App() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.1 }}
-                        key={r                        className="bg-white rounded-[2rem] p-3 shadow-sm border border-slate-100 flex flex-col gap-3"
+                        key={room.id}
+                        className="bg-white rounded-[2rem] p-3 shadow-sm border border-slate-100 flex flex-col gap-3"
                       >
                         {/* Top: Image */}
                         <div className="w-full relative overflow-hidden rounded-[1.5rem] aspect-[4/3] sm:aspect-[16/9]">
