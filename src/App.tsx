@@ -1,8 +1,8 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Plus, Minus, X, ArrowRight, BedDouble, UtensilsCrossed, ArrowDown, Tv, ShowerHead, Wind, Wifi, Waves, Users, Utensils, Sun, Loader2 } from 'lucide-react';
+import { MapPin, Plus, Minus, X, ArrowRight, BedDouble, UtensilsCrossed, ArrowDown, Tv, ShowerHead, Wind, Wifi, Waves, Users, Utensils, Sun } from 'lucide-react';
 import { rooms as hardcodedRooms, menu as hardcodedMenu, categories as hardcodedCategories } from './data';
-import { loadSheetData, type SheetMenuItem, type SheetRoom } from './sheets';
+import { loadSheetData, type SheetRoom } from './sheets';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -38,7 +38,16 @@ function getAmenityIcon(amenityName: string): string {
   return 'Sun'; // default icon
 }
 
-function convertSheetRoom(sr: SheetRoom) {
+interface Room {
+  id: string;
+  name: string;
+  price: number | null;
+  individualPrice: number | null;
+  image: string;
+  amenities: { name: string; icon: string; }[];
+}
+
+function convertSheetRoom(sr: SheetRoom): Room {
   const amenitiesList = sr.amenities
     ? sr.amenities.split(',').map(a => a.trim()).filter(Boolean)
     : [];
@@ -62,21 +71,17 @@ export default function App() {
   const [cart, setCart] = useState<{ id: string; name: string; price: number; quantity: number }[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
   // Dynamic data from Google Sheets (with fallback to hardcoded)
   const [dynamicCategories, setDynamicCategories] = useState<string[]>(hardcodedCategories);
   const [dynamicMenu, setDynamicMenu] = useState<any[]>(hardcodedMenu);
-  const [dynamicRooms, setDynamicRooms] = useState<any[]>(hardcodedRooms);
+  const [dynamicRooms, setDynamicRooms] = useState<Room[]>(hardcodedRooms as unknown as Room[]);
   const [activeCategory, setActiveCategory] = useState(hardcodedCategories[0]);
-  const [sheetError, setSheetError] = useState(false);
 
   // Load data from Google Sheets on mount
   useEffect(() => {
     let cancelled = false;
 
     async function loadData() {
-      setIsLoading(true);
       try {
         const data = await loadSheetData();
 
@@ -122,7 +127,7 @@ export default function App() {
           }
 
           // Handle Rooms with fallback and merging
-          let finalRooms = [...hardcodedRooms];
+          let finalRooms: Room[] = [...hardcodedRooms] as unknown as Room[];
           if (data.extraRooms.length > 0) {
             data.extraRooms.forEach(sr => {
               const name = sr.name.trim();
@@ -144,17 +149,13 @@ export default function App() {
             });
           }
           setDynamicRooms(finalRooms);
-
-          setSheetError(false);
         } else {
           // No sheet data available - use hardcoded fallback
-          setSheetError(true);
         }
       } catch (err) {
         console.error('Failed to load Google Sheets data:', err);
-        if (!cancelled) setSheetError(true);
       } finally {
-        if (!cancelled) setIsLoading(false);
+        // load finished
       }
     }
 
